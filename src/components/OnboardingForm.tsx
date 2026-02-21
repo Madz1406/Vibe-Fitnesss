@@ -31,6 +31,8 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
       setCurrentStep(currentStep + 1);
     } else {
       // Complete onboarding
+      console.log('Profile:', profile);
+      console.log('Complete:', isProfileComplete(profile));
       if (isProfileComplete(profile)) {
         onComplete(profile as UserProfile);
       }

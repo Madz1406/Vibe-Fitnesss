@@ -9,6 +9,7 @@ from diet_ai import diet_generator
 from workout_ai import workout_generator
 from datetime import datetime
 import logging
+import os
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -298,7 +299,8 @@ def server_error(error):
     return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':
-    print("🚀 Starting Vibe Fitness Backend API on http://localhost:5000")
+    port = int(os.environ.get('PORT', 5000))
+    print(f"🚀 Starting Vibe Fitness Backend API on port {port}")
     print("📚 API Documentation:")
     print("   GET /api/health - Health check")
     print("   POST /api/diet-plan - Generate 7-day diet plan")
@@ -307,4 +309,4 @@ if __name__ == '__main__':
     print("   GET /api/meal-search - Search meals")
     print("   POST /api/calculate-nutrition - Calculate meal nutrition")
     print("   POST /api/shopping-list - Generate shopping list")
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=port)

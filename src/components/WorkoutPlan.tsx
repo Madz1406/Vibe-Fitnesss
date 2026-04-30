@@ -4,6 +4,8 @@ import { CheckCircle, AlertCircle, Dumbbell, Activity, TrendingUp, Clock, Heart,
 import { triggerRipple } from '../utils/ripple';
 import { generateWorkoutPlanPDF } from '../utils/reportGenerator';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 interface WorkoutPlanProps {
   userProfile: UserProfile | null;
 }
@@ -63,7 +65,7 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ userProfile }) => {
   const checkBackendHealth = async () => {
     try {
       setCheckingBackend(true);
-      const response = await fetch('http://localhost:5000/api/health');
+      const response = await fetch(`${API_BASE_URL}/health`);
       if (response.ok) {
         setBackendStatus('healthy');
       } else {
@@ -87,7 +89,7 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ userProfile }) => {
 
       // Validate backend health first
       if (backendStatus !== 'healthy') {
-        throw new Error('Backend service is not available. Please ensure the Python server is running on localhost:5000');
+        throw new Error('Backend service is not available. Please ensure the backend is running.');
       }
 
       // Prepare payload with minimal required fields
@@ -101,7 +103,7 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ userProfile }) => {
         daysAvailable: userProfile.workoutDaysPerWeek || undefined,
       };
 
-      const response = await fetch('http://localhost:5000/api/workout-plan', {
+      const response = await fetch(`${API_BASE_URL}/workout-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,7 +201,7 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ userProfile }) => {
                     <p><strong>Troubleshooting:</strong></p>
                     <ul className="list-disc list-inside">
                       <li>Make sure Python backend is running: <code className="bg-black/50 px-2 py-1 rounded">python app.py</code></li>
-                      <li>Backend should be on localhost:5000</li>
+                      <li>Backend should be running and accessible</li>
                       <li>Check that Flask-CORS is installed</li>
                     </ul>
                   </div>

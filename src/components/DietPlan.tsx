@@ -4,6 +4,8 @@ import { triggerRipple } from '../utils/ripple';
 import { generateDietPlanPDF } from '../utils/reportGenerator';
 import { calculateTDEE } from '../utils/calculations';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 interface DietPlanProps {
   userProfile: any;
 }
@@ -26,7 +28,7 @@ const DietPlan: React.FC<DietPlanProps> = ({ userProfile }) => {
   const checkBackendHealth = async () => {
     setCheckingBackend(true);
     try {
-      const response = await fetch('http://localhost:5000/api/health', {
+      const response = await fetch(`${API_BASE_URL}/health`, {
         method: 'GET',
       });
       setBackendHealthy(response.ok);
@@ -59,7 +61,7 @@ const DietPlan: React.FC<DietPlanProps> = ({ userProfile }) => {
 
       console.log('Sending diet plan request:', requestData);
 
-      const response = await fetch('http://localhost:5000/api/diet-plan', {
+      const response = await fetch(`${API_BASE_URL}/diet-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ const DietPlan: React.FC<DietPlanProps> = ({ userProfile }) => {
       setDietPlan(data.data);
 
       // Get recommendations
-      const recResponse = await fetch('http://localhost:5000/api/recommendations', {
+      const recResponse = await fetch(`${API_BASE_URL}/recommendations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
